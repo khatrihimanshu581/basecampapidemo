@@ -1,0 +1,5 @@
+gunicorn==19.7.1
+Django==1.9.8
+requests==2.18.4
+psycopg2==2.6.1
+whitenoise==3.0
