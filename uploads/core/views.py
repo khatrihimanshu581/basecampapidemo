@@ -12,23 +12,6 @@ from django.http import HttpResponse
 def home(request):
     return render(request, 'core/home.html')
 
-#--------------------------------------------------------------Create A ToDolist--------------------------------------------------------------------------
-def Create_ToDo(request):
-    template = loader.get_template('core/Create_ToDo.html')
-    Name=request.POST['name']
-    descriptions=request.POST['descriptions']
-    mysetting=APISetting()
-    url=mysetting.authURL
-    r = requests.post(''+url+'')
-    access_token=json.loads(r.text)['access_token']
-    url=mysetting.baseURl
-    url = ""+url+"buckets/1190341/todosets/177952765/todolists.json"
-    headers = {'Authorization': 'Bearer '+access_token+'',
-                'Content-Type' :'application/json'}
-    data = {"name": Name , "description": "<div><em>"+descriptions+"</em></div>"}
-    response = requests.post(url, json=data, headers=headers)
-    #return HttpResponse(response)
-    return HttpResponse(template.render(request))
 #------------------------------------------------------Upload File---------------------------------------------------------------------------------------------
 def Upload_Files(request):
     mysetting=APISetting()
