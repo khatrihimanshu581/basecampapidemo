@@ -1,4 +1,6 @@
 
+from django.db import models
+
 class APISetting(object):
 
    def __init__(self):

@@ -4,13 +4,32 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import requests
 import json
-from django.core import APISetting
+from uploads.core import APISetting
 from django.http import HttpResponse
 
 #-----------------------------------------------------Home Page--------------------------------------------------------------------------------------
 
 def home(request):
     return render(request, 'core/home.html')
+
+
+#--------------------------------------------------------------Create A ToDolist--------------------------------------------------------------------------
+def Create_ToDo(request):
+    template = loader.get_template('core/Create_ToDo.html')
+    Name=request.POST['name']
+    descriptions=request.POST['descriptions']
+    mysetting=APISetting()
+    authURL=mysetting.authURL
+    baseURl=mysetting.baseURl
+    url= ''+authURL+''
+    r = requests.post(''+authURL+'')
+    access_token=json.loads(r.text)['access_token']
+    url = ""+baseURl+"buckets/1190341/todosets/177952765/todolists.json"
+    headers = {'Authorization': 'Bearer '+access_token+'',
+                'Content-Type' :'application/json'}
+    data = {"name": Name , "description": "<div><em>"+descriptions+"</em></div>"}
+    response = requests.post(url, json=data, headers=headers)
+    return HttpResponse(template.render(request))
 
 #------------------------------------------------------Upload File---------------------------------------------------------------------------------------------
 def Upload_Files(request):
@@ -35,7 +54,7 @@ def Upload_Files(request):
     url= ''+authURL+''
     r = requests.post(''+authURL+'')
     access_token=json.loads(r.text)['access_token']
-    urls = ""+baseURl+"/buckets/1190341/vaults/177952772/uploads.json"
+    urls = ""+baseURl+"buckets/1190341/vaults/177952772/uploads.json"
     headers = {'Authorization': 'Bearer '+access_token+'',
                  'Content-Type' :'application/json'}
     data = {"attachable_sgid":attachable_sgid,"description":"<div><strong>"+title+"</strong></div>","base_name":""+title+""}
