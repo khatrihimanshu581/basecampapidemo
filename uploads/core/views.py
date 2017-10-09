@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import requests
 import json
-from uploads.core import APISetting
+from uploads.core.models import APISetting
 from django.http import HttpResponse
 
 #-----------------------------------------------------Home Page--------------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ def Create_ToDo(request):
     descriptions=request.POST['descriptions']
     mysetting=APISetting()
     authURL=mysetting.authURL
-    baseURl=mysetting.baseURl
+    baseURl=mysetting.baseURL
     url= ''+authURL+''
     r = requests.post(''+authURL+'')
     access_token=json.loads(r.text)['access_token']
